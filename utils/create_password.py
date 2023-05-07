@@ -1,38 +1,24 @@
-import json
-import os
-from tkinter import Canvas, Tk, PhotoImage, Label, Entry, Button, messagebox, END
+from tkinter import END
 import string
-from secrets import choice
-# ---------- CREATE PASSWORD ---------- #
+import random
 
-# necessary imports
-import secrets
-import string
-
-from utils.save import save
-
-
-def create_password(password_entry):
-
-    # define the alphabet
+def create_password(password_entry_widget):
     letters = string.ascii_letters
     digits = string.digits
     special_chars = string.punctuation
-
     alphabet = letters + digits + special_chars
 
-    # fix password length
     pwd_length = 12
 
-    # generate password meeting constraints
     while True:
-        pwd = ''
-        for i in range(pwd_length):
-            pwd += ''.join(secrets.choice(alphabet))
+        pwd = ''.join(random.choices(alphabet, k=pwd_length))
+        if all(char not in letters for char in pwd):
+            continue
+        if all(char not in special_chars for char in pwd):
+            continue
+        if sum(char in digits for char in pwd) < 2:
+            continue
+        break
 
-        if (any(char in special_chars for char in pwd) and
-                sum(char in digits for char in pwd) >= 2):
-            break
-    password_entry.delete(0, END)
-    password_entry.insert(END, pwd)
-    password_entry.clipboard_append(pwd)
+    password_entry_widget.delete(0, END)
+    password_entry_widget.insert(END, pwd)

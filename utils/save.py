@@ -1,16 +1,15 @@
 import json
 import os
-from tkinter import Canvas, Tk, PhotoImage, Label, Entry, Button, messagebox, END
-import string
-from secrets import choice
-# ---------- SAVE PASSWORD ---------- #
+from typing import Dict
+from tkinter import messagebox, END, Entry
 
 
-def save(email_entry, website_name_entry, website_url_entry, password_entry):
+def save_password_to_file(email_entry: Entry, website_name_entry: Entry, website_url_entry: Entry, password_entry: Entry) -> None:
     email = email_entry.get()
     website_name = website_name_entry.get()
     website_url = website_url_entry.get()
     password = password_entry.get()
+
     if len(website_url) == 0 or len(password) == 0:
         messagebox.showerror(title="Oops", message="Please fill all fields")
     else:
@@ -24,14 +23,11 @@ def save(email_entry, website_name_entry, website_url_entry, password_entry):
                 "password": password,
             }
             file_name = 'passwords_data.json'
-            if not os.path.exists(file_name):
-                with open(file_name, 'w') as f:
-                    json.dump([], f)
-            with open(file_name, 'r') as f:
-                data = json.load(f)
-            data.append(data_to_save)
-            with open(file_name, 'w') as f:
-                json.dump(data, f)
-                website_name_entry.delete(0, END)
-                website_url_entry.delete(0, END)
-                password_entry.delete(0, END)
+            with open(file_name, 'a') as f:
+                f.write(json.dumps(data_to_save) + '\n')
+                clear_form_entries(website_name_entry, website_url_entry, password_entry)
+
+def clear_form_entries(website_name_entry: Entry, website_url_entry: Entry, password_entry: Entry) -> None:
+    website_name_entry.delete(0, END)
+    website_url_entry.delete(0, END)
+    password_entry.delete(0, END)
