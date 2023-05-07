@@ -1,7 +1,8 @@
-from tkinter import Canvas, PhotoImage, Label, Entry, Button
+from tkinter import Canvas, PhotoImage, Label, Entry, Button, Frame
 from utils.create_password import create_password
 from utils.print_saved import print_saved
 from utils.save import save_password_to_file
+import os
 
 
 def create_gui(root):
@@ -9,37 +10,40 @@ def create_gui(root):
     root.config(padx=50, pady=50)
 
     # Create the canvas and add the logo
-    canvas = Canvas(width=400, height=400)
-    photo = PhotoImage(file='./wolf.png')
-    canvas.create_image(100, 100, image=photo)
+    canvas = Canvas(root, width=400, height=400)
+    canvas.create_image(100, 100)
     canvas.grid(column=1, row=0)
 
+    # Create the input frame
+    input_frame = Frame(root)
+    input_frame.grid(column=0, row=0, padx=10, pady=10)
+
     # Create the labels
-    website_name_label = Label(text="Website name:")
-    website_name_label.grid(column=0, row=1)
-    website_url_label = Label(text="Website URL:")
-    website_url_label.grid(column=0, row=2)
-    email_label = Label(text="Email/Username:")
-    email_label.grid(column=0, row=3)
-    password_label = Label(text="Password:")
-    password_label.grid(column=0, row=4)
+    website_name_label = Label(input_frame, text="Website name:")
+    website_name_label.grid(column=0, row=0, sticky="w")
+    website_url_label = Label(input_frame, text="Website URL:")
+    website_url_label.grid(column=0, row=1, sticky="w")
+    email_label = Label(input_frame, text="Email/Username:")
+    email_label.grid(column=0, row=2, sticky="w")
+    password_label = Label(input_frame, text="Password:")
+    password_label.grid(column=0, row=3, sticky="w")
 
     # Create the entry fields
-    website_name_entry = Entry(width=35)
-    website_name_entry.grid(column=1, row=1, columnspan=2)
-    website_url_entry = Entry(width=35)
-    website_url_entry.grid(column=1, row=2, columnspan=2)
-    email_entry = Entry(width=35)
-    email_entry.grid(column=1, row=3, columnspan=2)
-    password_entry = Entry(width=20)
-    password_entry.grid(column=1, row=4)
+    website_name_entry = Entry(input_frame, width=35)
+    website_name_entry.grid(column=1, row=0)
+    website_url_entry = Entry(input_frame, width=35)
+    website_url_entry.grid(column=1, row=1)
+    email_entry = Entry(input_frame, width=35)
+    email_entry.grid(column=1, row=2)
+    password_entry = Entry(input_frame, width=20)
+    password_entry.grid(column=1, row=3)
 
     # Create the buttons
-    generate_button = Button(text="Generate Password",
+    generate_button = Button(input_frame, text="Generate Password",
                              command=lambda: create_password(password_entry))
-    generate_button.grid(column=2, row=4)
-    add_button = Button(text="Add", command=lambda: save_password_to_file(
+    generate_button.grid(column=2, row=3, padx=10)
+    add_button = Button(input_frame, text="Add", command=lambda: save_password_to_file(
         email_entry, website_name_entry, website_url_entry, password_entry))
-    add_button.grid(column=1, row=5, columnspan=2)
-    print_button = Button(text="Print saved", command=print_saved)
-    print_button.grid(column=2, row=6)
+    add_button.grid(column=1, row=4, columnspan=2, pady=10)
+    print_button = Button(input_frame, text="Print saved", command=print_saved)
+    print_button.grid(column=2, row=5, pady=10)
