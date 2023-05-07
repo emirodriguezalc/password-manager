@@ -1,3 +1,5 @@
+import json
+import os
 from tkinter import Canvas, Tk, PhotoImage, Label, Entry, Button, messagebox, END
 import string
 from secrets import choice
@@ -32,10 +34,10 @@ def create_password():
             break
     password_entry.delete(0, END)
     password_entry.insert(END, pwd)
-    password_entry.clipboard_append(END, pwd)
+    password_entry.clipboard_append(pwd)
+
 
 # ---------- SAVE PASSWORD ---------- #
-
 
 def save():
     email = email_entry.get()
@@ -47,12 +49,30 @@ def save():
         is_ok = messagebox.askokcancel(
             title=website, message=f"You've entered\nEmail: {email}\nPassword: {password}\n"f"Are you sure you want to save?")
         if is_ok:
-            with open('pass.txt', "a") as f:
-                f.write(f"{website} | {email} | {password}\n")
-            website_entry.delete(0, END)
-            password_entry.delete(0, END)
+            data_to_save = {
+                "email": email,
+                "website": website,
+                "password": password,
+            }
+            file_name = 'passwords_data.json'
+            if not os.path.exists(file_name):
+                with open(file_name, 'w') as f:
+                    json.dump([], f)
+            with open(file_name, 'r') as f:
+                data = json.load(f)
+            data.append(data_to_save)
+            with open(file_name, 'w') as f:
+                json.dump(data, f)
+                website_entry.delete(0, END)
+                password_entry.delete(0, END)
 
 # ---------- GUI ---------- #
+
+
+def print_saved():
+    with open('passwords_data.json', 'r') as fp:
+        data = json.load(fp)
+        print(data)
 
 
 screen = Tk()
@@ -86,5 +106,7 @@ generate_button = Button(text="Generate Password", command=create_password)
 generate_button.grid(column=2, row=3)
 add_button = Button(text="Add", command=save)
 add_button.grid(column=1, row=5, columnspan=2)
+print_button = Button(text="Print saved", command=print_saved)
+print_button.grid(column=3, row=5)
 
 screen.mainloop()
