@@ -1,21 +1,30 @@
-from tkinter import Canvas, PhotoImage, Label, Entry, Button, Frame
+from tkinter import Canvas, PhotoImage, Label, Entry, Button, Frame, Tk
 from utils.create_password import create_password
 from utils.print_saved import print_saved
 from utils.save import save_password_to_file
 import os
 
 
-def create_gui(root):
+def handle_save(addPasswords, email_entry, website_name_entry, website_url_entry, password_entry):
+    save_password_to_file(
+        email_entry, website_name_entry, website_url_entry, password_entry)
+    addPasswords.destroy()
+
+def destroy(addPasswords):
+    addPasswords.destroy()
+
+
+def add_gui(addPasswords):
     # Set up the main window
-    root.config(padx=50, pady=50)
+    addPasswords.config(padx=50, pady=50)
 
     # Create the canvas and add the logo
-    canvas = Canvas(root, width=400, height=400)
+    canvas = Canvas(addPasswords, width=400, height=400)
     canvas.create_image(100, 100)
     canvas.grid(column=1, row=0)
 
     # Create the input frame
-    input_frame = Frame(root)
+    input_frame = Frame(addPasswords)
     input_frame.grid(column=0, row=0, padx=10, pady=10)
 
     # Create the labels
@@ -42,8 +51,10 @@ def create_gui(root):
     generate_button = Button(input_frame, text="Generate Password",
                              command=lambda: create_password(password_entry))
     generate_button.grid(column=2, row=3, padx=10)
-    add_button = Button(input_frame, text="Add", command=lambda: save_password_to_file(
-        email_entry, website_name_entry, website_url_entry, password_entry))
+    add_button = Button(input_frame, text="Add",
+                        command=lambda: handle_save(addPasswords, email_entry, website_name_entry, website_url_entry, password_entry))
     add_button.grid(column=1, row=4, columnspan=2, pady=10)
     print_button = Button(input_frame, text="Print saved", command=print_saved)
     print_button.grid(column=2, row=5, pady=10)
+    print_button = Button(input_frame, text="Back", command=lambda: destroy(addPasswords))
+    print_button.grid(column=2, row=6, pady=10)

@@ -1,9 +1,11 @@
 from tkinter import Tk, messagebox, Label, Entry, Button
 from utils.authenticate import authenticate
-from utils.create_gui import create_gui
+from utils.add_gui import add_gui
 from utils.register import register
+from utils.view_passwords_gui import view_passwords_gui
 
 USERS_FILE = "users.json"
+
 
 def login_window():
     login_root = Tk()
@@ -72,9 +74,10 @@ def main():
     root = Tk()
     root.title("She wolf password manager")
 
-    create_gui(root)
+    view_passwords_gui(root)
 
-    root.mainloop()
+
+"""     root.mainloop() """
 
 
 if __name__ == "__main__":

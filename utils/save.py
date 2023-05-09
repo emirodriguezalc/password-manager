@@ -23,9 +23,18 @@ def save_password_to_file(email_entry: Entry, website_name_entry: Entry, website
                 "password": password,
             }
             file_name = 'passwords_data.json'
-            with open(file_name, 'a') as f:
-                f.write(json.dumps(data_to_save) + '\n')
-                clear_form_entries(website_name_entry, website_url_entry, password_entry)
+            if os.path.exists(file_name):
+                with open(file_name, 'r+') as f:
+                    data = json.load(f)
+                    data.append(data_to_save)
+                    f.seek(0)
+                    json.dump(data, f)
+            else:
+                with open(file_name, 'w') as f:
+                    json.dump([data_to_save], f)
+            clear_form_entries(website_name_entry,
+                               website_url_entry, password_entry)
+
 
 def clear_form_entries(website_name_entry: Entry, website_url_entry: Entry, password_entry: Entry) -> None:
     website_name_entry.delete(0, END)
