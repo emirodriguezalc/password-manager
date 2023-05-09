@@ -55,18 +55,16 @@ def update_table(viewPasswordsGui, on_add_button_click):
         password_label = Label(
             table_frame, text=password['password'])
         password_label.grid(column=3, row=i+1, padx=5, pady=5)
-
-    add_password_button = Button(
-        viewPasswordsGui, text="Add new password", command=on_add_button_click)
-    add_password_button.grid(column=2, row=5, pady=10)
-    return viewPasswordsGui
-
-
-"""         # Create buttons to copy URL and password to clipboard
+    # Create buttons to copy URL and password to clipboard
         copy_url_button = Button(
             table_frame, text="Copy URL", command=lambda url=password['website_url']: viewPasswordsGui.clipboard_append(url))
         copy_url_button.grid(column=4, row=i+1, padx=5, pady=5)
 
         copy_password_button = Button(
             table_frame, text="Copy Password", command=lambda password=password_entry: viewPasswordsGui.clipboard_append(password))
-        copy_password_button.grid(column=5, row=i+1, padx=5, pady=5) """
+        copy_password_button.grid(column=5, row=i+1, padx=5, pady=5)
+
+    add_password_button = Button(
+        viewPasswordsGui, text="Add new password", command=on_add_button_click)
+    add_password_button.grid(column=2, row=5, pady=10)
+    return viewPasswordsGui
