@@ -3,7 +3,7 @@ import os
 from tkinter import Button, Frame, Label, messagebox, END, Entry, Tk
 
 
-def update_table(viewPasswordsGui, on_add_button_click):
+def update_table(viewPasswordsGui, on_add_button_click, on_edit_button_click):
     # Clear the table
 
     viewPasswordsGui.config(padx=50, pady=50)
@@ -67,4 +67,7 @@ def update_table(viewPasswordsGui, on_add_button_click):
     add_password_button = Button(
         viewPasswordsGui, text="Add new password", command=on_add_button_click)
     add_password_button.grid(column=2, row=5, pady=10)
+    edit_button = Button(viewPasswordsGui, text="EDIT",
+                         command=on_edit_button_click)
+    edit_button.grid(column=2, row=6, padx=5, pady=5)
     return viewPasswordsGui

@@ -56,5 +56,5 @@ def add_gui(addPasswords):
     add_button.grid(column=1, row=4, columnspan=2, pady=10)
     print_button = Button(input_frame, text="Print saved", command=print_saved)
     print_button.grid(column=2, row=5, pady=10)
-    print_button = Button(input_frame, text="Back", command=lambda: destroy(addPasswords))
-    print_button.grid(column=2, row=6, pady=10)
+    back_button = Button(input_frame, text="Back", command=lambda: destroy(addPasswords))
+    back_button.grid(column=2, row=6, pady=10)
