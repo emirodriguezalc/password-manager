@@ -34,6 +34,9 @@ def edit_table(editPasswordsGui):
     password_header = Label(
         table_frame, text="PASSWORD", font=("Arial Bold", 12))
     password_header.grid(column=3, row=0, padx=5, pady=5)
+    delete_header = Label(
+        table_frame, text="DELETE", font=("Arial Bold", 12))
+    delete_header.grid(column=4, row=0, padx=5, pady=5)
 
     file_name = 'passwords_data.json'
     if os.path.exists(file_name):
@@ -42,6 +45,7 @@ def edit_table(editPasswordsGui):
 
     # Create the input fields and repopulate the table with updated data
     input_fields = []
+    delete_buttons = []
     for i, password in enumerate(data):
         website_name_label = Label(
             table_frame, text=password['website_name'])
@@ -60,6 +64,10 @@ def edit_table(editPasswordsGui):
         password_entry.insert(END, password['password'])
         password_entry.grid(column=3, row=i+1, padx=5, pady=5)
         input_fields.append(password_entry)
+
+        delete_button = Button(table_frame, text="Delete", command=lambda i=i: delete_row(i, data, editPasswordsGui))
+        delete_button.grid(column=4, row=i+1, padx=5, pady=5)
+        delete_buttons.append(delete_button)
 
     # Create the save button
     save_button = Button(input_frame, text="Save Changes",
@@ -84,3 +92,18 @@ def save_changes(input_fields, data, editPasswordsGui):
 
     messagebox.showinfo("Success", "Changes saved successfully.")
     destroy(editPasswordsGui)
+
+
+def delete_row(index, data, editPasswordsGui):
+    is_ok = messagebox.askokcancel(
+    title=f"Delete", message=f"Are you sure you want to delete this row?")
+    if is_ok:
+      # Remove the selected row from the data
+      del data[index]
+
+      # Save the updated data to the file
+      with open('passwords_data.json', 'w') as fp:
+          json.dump(data, fp)
+
+      messagebox.showinfo("Success", "Row deleted successfully.")
+      edit_table(editPasswordsGui)

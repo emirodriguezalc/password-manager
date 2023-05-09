@@ -7,7 +7,7 @@ The password manager should have the following features:
 - Allow users to create a new account by entering their username and password. DONE
 - Allow users to log in to their account using their username and password. DONE
 - Allow users to store their website name, website URL, username, and password for each account. TODO FOR EACH ACCOUNT
-- Allow users to view, edit, and delete their stored account information. TODO
+- Allow users to view, edit, and delete their stored account information. DONE
 - Implement basic security features such as password strength checking, password hashing, and encryption of stored passwords. TODO
 
 ## Documentation
