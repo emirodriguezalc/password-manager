@@ -9,6 +9,4 @@ def authenticate(username, password, file):
         users = {}
 
     if username in users and users[username] == hash_password(password):
-        return True
-    else:
-        return False
+        return username

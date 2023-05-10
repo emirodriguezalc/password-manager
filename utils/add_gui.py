@@ -1,20 +1,20 @@
 from tkinter import Canvas, PhotoImage, Label, Entry, Button, Frame, Tk
 from utils.create_password import create_password
-from utils.print_saved import print_saved
 from utils.save import save_password_to_file
 import os
 
 
-def handle_save(addPasswords, email_entry, website_name_entry, website_url_entry, password_entry):
+def handle_save(addPasswords, email_entry, website_name_entry, website_url_entry, password_entry, file_name):
     save_password_to_file(
-        email_entry, website_name_entry, website_url_entry, password_entry)
+        email_entry, website_name_entry, website_url_entry, password_entry, file_name)
     addPasswords.destroy()
+
 
 def destroy(addPasswords):
     addPasswords.destroy()
 
 
-def add_gui(addPasswords):
+def add_gui(addPasswords, file_name):
     # Set up the main window
     addPasswords.config(padx=50, pady=50)
 
@@ -52,9 +52,8 @@ def add_gui(addPasswords):
                              command=lambda: create_password(password_entry))
     generate_button.grid(column=2, row=3, padx=10)
     add_button = Button(input_frame, text="Add",
-                        command=lambda: handle_save(addPasswords, email_entry, website_name_entry, website_url_entry, password_entry))
+                        command=lambda: handle_save(addPasswords, email_entry, website_name_entry, website_url_entry, password_entry, file_name))
     add_button.grid(column=1, row=4, columnspan=2, pady=10)
-    print_button = Button(input_frame, text="Print saved", command=print_saved)
-    print_button.grid(column=2, row=5, pady=10)
-    back_button = Button(input_frame, text="Back", command=lambda: destroy(addPasswords))
+    back_button = Button(input_frame, text="Back",
+                         command=lambda: destroy(addPasswords))
     back_button.grid(column=2, row=6, pady=10)

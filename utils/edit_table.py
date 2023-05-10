@@ -7,7 +7,7 @@ def destroy(viewPasswordsGui):
     viewPasswordsGui.destroy()
 
 
-def edit_table(editPasswordsGui):
+def edit_table(editPasswordsGui, file_name):
     # Clear the table
     editPasswordsGui.config(padx=50, pady=50)
     for widget in editPasswordsGui.winfo_children():
@@ -38,9 +38,8 @@ def edit_table(editPasswordsGui):
         table_frame, text="DELETE", font=("Arial Bold", 12))
     delete_header.grid(column=4, row=0, padx=5, pady=5)
 
-    file_name = 'passwords_data.json'
     if os.path.exists(file_name):
-        with open('passwords_data.json', 'r') as fp:
+        with open(file_name, 'r') as fp:
             data = json.load(fp)
 
     # Create the input fields and repopulate the table with updated data
@@ -65,13 +64,14 @@ def edit_table(editPasswordsGui):
         password_entry.grid(column=3, row=i+1, padx=5, pady=5)
         input_fields.append(password_entry)
 
-        delete_button = Button(table_frame, text="Delete", command=lambda i=i: delete_row(i, data, editPasswordsGui))
+        delete_button = Button(table_frame, text="Delete", command=lambda i=i: delete_row(
+            i, data, editPasswordsGui, file_name))
         delete_button.grid(column=4, row=i+1, padx=5, pady=5)
         delete_buttons.append(delete_button)
 
     # Create the save button
     save_button = Button(input_frame, text="Save Changes",
-                         command=lambda: save_changes(input_fields, data, editPasswordsGui))
+                         command=lambda: save_changes(input_fields, data, editPasswordsGui, file_name))
     save_button.grid(column=2, row=2, pady=10)
     back_button = Button(input_frame, text="Back",
                          command=lambda: destroy(editPasswordsGui))
@@ -80,30 +80,30 @@ def edit_table(editPasswordsGui):
     return editPasswordsGui
 
 
-def save_changes(input_fields, data, editPasswordsGui):
+def save_changes(input_fields, data, editPasswordsGui, file_name):
     # Update the data with the new input values
     for i in range(len(data)):
         data[i]['email'] = input_fields[i*2].get()
         data[i]['password'] = input_fields[i*2+1].get()
 
     # Save the updated data to the file
-    with open('passwords_data.json', 'w') as fp:
+    with open(file_name, 'w') as fp:
         json.dump(data, fp)
 
     messagebox.showinfo("Success", "Changes saved successfully.")
     destroy(editPasswordsGui)
 
 
-def delete_row(index, data, editPasswordsGui):
+def delete_row(index, data, editPasswordsGui, file_name):
     is_ok = messagebox.askokcancel(
-    title=f"Delete", message=f"Are you sure you want to delete this row?")
+        title=f"Delete", message=f"Are you sure you want to delete this row?")
     if is_ok:
-      # Remove the selected row from the data
-      del data[index]
+        # Remove the selected row from the data
+        del data[index]
 
-      # Save the updated data to the file
-      with open('passwords_data.json', 'w') as fp:
-          json.dump(data, fp)
+        # Save the updated data to the file
+        with open(file_name, 'w') as fp:
+            json.dump(data, fp)
 
-      messagebox.showinfo("Success", "Row deleted successfully.")
-      edit_table(editPasswordsGui)
+        messagebox.showinfo("Success", "Row deleted successfully.")
+        edit_table(editPasswordsGui, file_name)

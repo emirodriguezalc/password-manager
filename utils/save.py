@@ -4,7 +4,7 @@ from typing import Dict
 from tkinter import messagebox, END, Entry
 
 
-def save_password_to_file(email_entry: Entry, website_name_entry: Entry, website_url_entry: Entry, password_entry: Entry) -> None:
+def save_password_to_file(email_entry: Entry, website_name_entry: Entry, website_url_entry: Entry, password_entry: Entry, file_name) -> None:
     email = email_entry.get()
     website_name = website_name_entry.get()
     website_url = website_url_entry.get()
@@ -22,7 +22,6 @@ def save_password_to_file(email_entry: Entry, website_name_entry: Entry, website
                 "website_url": website_url,
                 "password": password,
             }
-            file_name = 'passwords_data.json'
             if os.path.exists(file_name):
                 with open(file_name, 'r+') as f:
                     data = json.load(f)

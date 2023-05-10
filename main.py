@@ -1,6 +1,5 @@
 from tkinter import Tk, messagebox, Label, Entry, Button
 from utils.authenticate import authenticate
-from utils.add_gui import add_gui
 from utils.register import register
 from utils.view_passwords_gui import view_passwords_gui
 
@@ -57,10 +56,11 @@ def login_window():
 
 
 def login(username, password):
-    if authenticate(username, password, USERS_FILE):
-        main()
-    else:
-        messagebox.showerror("Error", "Invalid username or password")
+        logged_user = authenticate(username, password, USERS_FILE)
+        if logged_user:
+            main(logged_user)
+        else:
+            messagebox.showerror("Error", "Invalid username or password")
 
 
 def register_user(username, password):
@@ -70,11 +70,13 @@ def register_user(username, password):
         messagebox.showerror("Error", "Username already taken")
 
 
-def main():
+def main(logged_user):
     root = Tk()
     root.title("She wolf password manager")
+    file_name = f"{logged_user}.json"
 
-    view_passwords_gui(root)
+
+    view_passwords_gui(root, file_name)
 
 
 """     root.mainloop() """
